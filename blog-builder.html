@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WP & Volusion Blog Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .mw-custom-blog-section {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .mw-custom-blog-section h2 {
+      margin-top: 0;
+    }
+    label {
+      font-weight: bold;
+    }
+    textarea, input[type="text"], input[type="url"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin: 5px 10px 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .mw-custom-blog-block-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mw-custom-blog-block-wrapper .mw-custom-blog-section {
+      margin-bottom: 20px;
+    }
+    button {
+      display: block;
+      margin: 10px auto;
+      padding: 12px 30px;
+      font-size: 16px;
+      background-color: #0073aa;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005e8c;
+    }
+    #output, #wp-css {
+      white-space: pre-wrap;
+      background: #fff;
+      padding: 20px;
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+    .instructions {
+      background: #eef6ff;
+      padding: 15px;
+      margin-top: 20px;
+      border-left: 4px solid #0073aa;
+    }
+    .platform-options {
+      display: flex;
+      gap: 20px;
+    }
+    .platform-options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>WP &amp; Volusion Blog Builder</h1>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 30px;">
+    <strong>This builder is intended for use to style a blog for WP and Volusion.</strong><br>
+    You must have content written, and images uploaded with links available.
+  </p>
+  <div class="mw-custom-blog-section">
+    <div class="platform-options">
+      <label><input type="radio" name="platform" value="volusion" checked> Volusion</label>
+      <label><input type="radio" name="platform" value="wordpress"> WordPress</label>
+    </div>
+  </div>
+
+  <div class="mw-custom-blog-section">
+  <h2>Intro Paragraph</h2>
+  <textarea id="intro" rows="4" placeholder="Enter intro paragraph text here..."></textarea>
+</div>
+
+<div class="mw-custom-blog-block-wrapper">
+  <div class="mw-custom-blog-section">
+    <h2>Block 1 (Image Right)</h2>
+    <label>Heading:</label>
+    <input type="text" id="h1">
+    <label>Text:</label>
+    <textarea id="t1" rows="4"></textarea>
+    <label>Image URL:</label>
+    <input type="url" id="i1">
+    <label>Alt Text:</label>
+    <input type="text" id="a1">
+  </div>
+
+  <div class="mw-custom-blog-section">
+    <h2>Block 2 (Image Left)</h2>
+    <label>Heading:</label>
+    <input type="text" id="h2">
+    <label>Text:</label>
+    <textarea id="t2" rows="4"></textarea>
+    <label>Image URL:</label>
+    <input type="url" id="i2">
+    <label>Alt Text:</label>
+    <input type="text" id="a2">
+  </div>
+
+  <div class="mw-custom-blog-section">
+    <h2>Block 3 (Image Right)</h2>
+    <label>Heading:</label>
+    <input type="text" id="h3">
+    <label>Text:</label>
+    <textarea id="t3" rows="4"></textarea>
+    <label>Image URL:</label>
+    <input type="url" id="i3">
+    <label>Alt Text:</label>
+    <input type="text" id="a3">
+  </div>
+
+  <div class="mw-custom-blog-section">
+    <h2>Block 4 (Image Left)</h2>
+    <label>Heading:</label>
+    <input type="text" id="h4">
+    <label>Text:</label>
+    <textarea id="t4" rows="4"></textarea>
+    <label>Image URL:</label>
+    <input type="url" id="i4">
+    <label>Alt Text:</label>
+    <input type="text" id="a4">
+  </div>
+</div>
+
+<div class="mw-custom-blog-section">
+  <h2>Closing Paragraph</h2>
+  <textarea id="closing" rows="4" placeholder="Enter closing paragraph text here..."></textarea>
+</div>
+
+<div class="mw-custom-blog-section">
+  <h2>Call to Action Button</h2>
+  <label>Button Text:</label>
+  <input type="text" id="btnText" placeholder="e.g. Contact Us">
+  <label>Button URL:</label>
+  <input type="url" id="btnUrl" placeholder="https://example.com/contact">
+</div>
+
+
+  <button onclick="generateHTML()">Generate HTML</button>
+  <button onclick="copyOutput()">Copy HTML</button>
+  <button id="copyCssBtn" onclick="copyCSS()" style="display:none;">Copy CSS</button>
+
+  <div id="output"></div>
+  <div id="wp-css" style="display:none;"></div>
+  <div id="instructions" class="instructions" style="display:none;"></div>
+
+  <script>
+    function generateHTML() {
+      const intro = document.getElementById('intro').value;
+      const closing = document.getElementById('closing').value;
+      const btnText = document.getElementById('btnText').value;
+      const btnUrl = document.getElementById('btnUrl').value;
+
+      const blocks = [1, 2, 3, 4].map(i => {
+        const h = document.getElementById('h' + i)?.value || '';
+        const t = document.getElementById('t' + i)?.value || '';
+        const img = document.getElementById('i' + i)?.value || '';
+        const alt = document.getElementById('a' + i)?.value || '';
+        const dir = (i % 2 === 1) ? 'mw-image-right' : 'mw-image-left';
+        return `<div class="mw-custom-blog-content-block ${dir}">
+  <div class="mw-custom-blog-image-placeholder"><img src="${img}" alt="${alt}" style="width:100%; height:auto;"></div>
+  <div class="mw-custom-blog-text-block">
+    <h3>${h}</h3>
+    <p>${t}</p>
+  </div>
+</div>`;
+      }).join('\n');
+
+      const contentHTML = `<div class="mw-custom-blog-layout">
+  <p class="mw-custom-blog-intro-text">${intro}</p>
+  ${blocks}
+  <p class="mw-custom-blog-closing-text">${closing}</p>
+  <div class="mw-custom-blog-button-wrapper">
+    <a href="${btnUrl}" class="mw-custom-blog-cta-button">${btnText}</a>
+  </div>
+</div>`;
+
+      const css = `.mw-custom-blog-layout { max-width: 960px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+.mw-custom-blog-intro-text, .mw-custom-blog-closing-text { text-align: center; margin-bottom: 40px; }
+.mw-custom-blog-content-block { display: flex; flex-wrap: wrap; margin-bottom: 40px; align-items: center; gap: 20px; }
+.mw-custom-blog-image-placeholder { flex: 1 1 300px; background: #ccc; display: flex; align-items: center; justify-content: center; }
+.mw-custom-blog-text-block { flex: 1 1 300px; display: flex; flex-direction: column; justify-content: center; text-align: left; }
+.mw-custom-blog-text-block h3 { margin: 0 0 10px; }
+.mw-custom-blog-text-block p { margin: 0; line-height: 1.5; }
+.mw-image-right { flex-direction: row-reverse; }
+.mw-custom-blog-button-wrapper { text-align: center; margin-top: 40px; }
+.mw-custom-blog-cta-button { padding: 12px 24px; background-color: #0073aa; color: white; text-decoration: none; border-radius: 4px; display: inline-block; }
+.mw-custom-blog-cta-button:hover { background-color: #005e8c; }
+@media (max-width: 768px) { .mw-custom-blog-content-block { flex-direction: column !important; } .mw-custom-blog-image-placeholder, .mw-custom-blog-text-block { flex: 1 1 100%; } .mw-custom-blog-text-block { text-align: center; } }`;
+
+      const platform = document.querySelector('input[name="platform"]:checked').value;
+
+      if (platform === 'volusion') {
+        document.getElementById('output').textContent = contentHTML + `\n<style>\n${css}\n</style>`;
+        document.getElementById('wp-css').style.display = 'none';
+        document.getElementById('copyCssBtn').style.display = 'none';
+        document.getElementById('instructions').style.display = 'block';
+        document.getElementById('instructions').innerHTML = '<strong>Instructions for Volusion:</strong><br>Paste the generated code into the <em>category description</em> section.';
+      } else {
+        document.getElementById('output').textContent = contentHTML;
+        document.getElementById('wp-css').style.display = 'block';
+        document.getElementById('wp-css').textContent = css;
+        document.getElementById('copyCssBtn').style.display = 'block';
+        document.getElementById('instructions').style.display = 'block';
+        document.getElementById('instructions').innerHTML = '<strong>Instructions for WordPress:</strong><br>1. Paste the following code into the content editor with the <em>Code</em> tab selected.<br><br><strong>Then:</strong><br>2. Paste the CSS (below) at the bottom of <em>Appearance > Customize > Additional CSS</em>.';
+      }
+    }
+
+    function copyOutput() {
+      const content = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        alert("HTML copied to clipboard!");
+      });
+    }
+
+    function copyCSS() {
+      const cssContent = document.getElementById('wp-css').textContent;
+      navigator.clipboard.writeText(cssContent).then(() => {
+        alert("CSS copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
